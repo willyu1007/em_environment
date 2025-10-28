@@ -1,0 +1,65 @@
+{
+  "region": {
+    "crs": "WGS84",
+    "polygon": [
+      { "lat": 36.80, "lon": 104.20 },
+      { "lat": 36.80, "lon": 105.20 },
+      { "lat": 35.90, "lon": 105.20 },
+      { "lat": 35.90, "lon": 104.20 }
+    ]
+  },
+  "grid": { "resolution_deg": 0.025, "alt_m": 1000 },
+  "influence_buffer_km": 200,
+  "environment": {
+    "propagation": { "model": "two_ray_flat" },
+    "atmosphere": { "gas_loss": "auto", "rain_rate_mmph": 1, "fog_lwc_gm3": 0.1 },
+    "earth": { "k_factor": 1.3333333333 }
+  },
+  "bands": [
+    { "name": "S", "f_min_MHz": 2000, "f_max_MHz": 4000, "ref_bw_kHz": 1000 },
+    { "name": "C", "f_min_MHz": 4000, "f_max_MHz": 8000, "ref_bw_kHz": 1000 },
+    { "name": "Ku", "f_min_MHz": 12000, "f_max_MHz": 18000, "ref_bw_kHz": 1000 }
+  ],
+  "metric": "E_field_dBuV_per_m",
+  "combine_sources": "power_sum",
+  "temporal_agg": "peak",
+  "limits": { "max_sources": 50, "max_region_km": 220 },
+  "sources": [
+    {
+      "id": "mountain_radar",
+      "type": "radar",
+      "position": { "lat": 36.40, "lon": 104.70, "alt_m": 1800 },
+      "emission": { "eirp_dBm": 100, "center_freq_MHz": 5500, "bandwidth_MHz": 15, "polarization": "H", "duty_cycle": 0.25 },
+      "antenna": {
+        "pattern": { "type": "simplified_directional", "hpbw_deg": 2.8, "vpbw_deg": 2.8, "sidelobe_template": "Radar-Narrow-25" },
+        "pointing_az_deg": 135,
+        "pointing_el_deg": -2,
+        "scan": { "mode": "sector", "rpm": 8, "sector_deg": 90 }
+      }
+    },
+    {
+      "id": "satellite_link",
+      "type": "comm",
+      "position": { "lat": 36.20, "lon": 104.90, "alt_m": 1200 },
+      "emission": { "eirp_dBm": 78, "center_freq_MHz": 14500, "bandwidth_MHz": 50, "polarization": "RHCP", "duty_cycle": 0.7 },
+      "antenna": {
+        "pattern": { "type": "simplified_directional", "hpbw_deg": 1.5, "vpbw_deg": 1.5, "sidelobe_template": "RCS-13" },
+        "pointing_az_deg": 180,
+        "pointing_el_deg": 15,
+        "scan": { "mode": "none", "rpm": 0, "sector_deg": 0 }
+      }
+    },
+    {
+      "id": "troposcatter",
+      "type": "comm",
+      "position": { "lat": 36.10, "lon": 104.40, "alt_m": 900 },
+      "emission": { "eirp_dBm": 86, "center_freq_MHz": 2600, "bandwidth_MHz": 10, "polarization": "V", "duty_cycle": 0.5 },
+      "antenna": {
+        "pattern": { "type": "simplified_directional", "hpbw_deg": 5.0, "vpbw_deg": 7.0, "sidelobe_template": "MIL-STD-20" },
+        "pointing_az_deg": 60,
+        "pointing_el_deg": 3,
+        "scan": { "mode": "none", "rpm": 0, "sector_deg": 0 }
+      }
+    }
+  ]
+}

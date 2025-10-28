@@ -1,0 +1,39 @@
+{
+  "region": {
+    "crs": "WGS84",
+    "polygon": [
+      { "lat": 34.00, "lon": 118.00 },
+      { "lat": 34.00, "lon": 118.30 },
+      { "lat": 33.80, "lon": 118.30 },
+      { "lat": 33.80, "lon": 118.00 }
+    ]
+  },
+  "grid": { "resolution_deg": 0.02, "alt_m": 50 },
+  "influence_buffer_km": 200,
+  "environment": {
+    "propagation": { "model": "free_space" },
+    "atmosphere": { "gas_loss": "auto", "rain_rate_mmph": 0, "fog_lwc_gm3": 0 },
+    "earth": { "k_factor": 1.3333333333 }
+  },
+  "bands": [
+    { "name": "S", "f_min_MHz": 2000, "f_max_MHz": 4000, "ref_bw_kHz": 1000 }
+  ],
+  "metric": "E_field_dBuV_per_m",
+  "combine_sources": "power_sum",
+  "temporal_agg": "peak",
+  "limits": { "max_sources": 50, "max_region_km": 200 },
+  "sources": [
+    {
+      "id": "radar_free",
+      "type": "radar",
+      "position": { "lat": 33.90, "lon": 118.15, "alt_m": 35 },
+      "emission": { "eirp_dBm": 92, "center_freq_MHz": 3200, "bandwidth_MHz": 8, "polarization": "H", "duty_cycle": 0.2 },
+      "antenna": {
+        "pattern": { "type": "simplified_directional", "hpbw_deg": 3.5, "vpbw_deg": 3.5, "sidelobe_template": "MIL-STD-20" },
+        "pointing_az_deg": 30,
+        "pointing_el_deg": 0,
+        "scan": { "mode": "circular", "rpm": 15, "sector_deg": 360 }
+      }
+    }
+  ]
+}

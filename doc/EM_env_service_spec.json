@@ -1,0 +1,121 @@
+{
+  "region": {
+    "crs": "WGS84",
+    "polygon": [
+      {
+        "lat": 0.0,
+        "lon": 0.0
+      }
+    ]
+  },
+  "grid": {
+    "resolution_deg": 0.01,
+    "alt_m": 0
+  },
+  "influence_buffer_km": 200,
+  "environment": {
+    "propagation": {
+      "model": "free_space"
+    },
+    "atmosphere": {
+      "gas_loss": "auto",
+      "rain_rate_mmph": 0,
+      "fog_lwc_gm3": 0
+    },
+    "earth": {
+      "k_factor": 1.3333333333
+    }
+  },
+  "bands": [
+    {
+      "name": "VHF",
+      "f_min_MHz": 100,
+      "f_max_MHz": 300,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "UHF",
+      "f_min_MHz": 300,
+      "f_max_MHz": 1000,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "L",
+      "f_min_MHz": 1000,
+      "f_max_MHz": 2000,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "S",
+      "f_min_MHz": 2000,
+      "f_max_MHz": 4000,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "C",
+      "f_min_MHz": 4000,
+      "f_max_MHz": 8000,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "X",
+      "f_min_MHz": 8000,
+      "f_max_MHz": 12000,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "Ku",
+      "f_min_MHz": 12000,
+      "f_max_MHz": 18000,
+      "ref_bw_kHz": 1000
+    },
+    {
+      "name": "Ka",
+      "f_min_MHz": 26500,
+      "f_max_MHz": 40000,
+      "ref_bw_kHz": 1000
+    }
+  ],
+  "metric": "E_field_dBuV_per_m",
+  "combine_sources": "power_sum",
+  "temporal_agg": "peak",
+  "limits": {
+    "max_sources": 50,
+    "max_region_km": 200
+  },
+  "sources": [
+    {
+      "id": "example",
+      "type": "radar",
+      "position": {
+        "lat": 0.0,
+        "lon": 0.0,
+        "alt_m": 0.0
+      },
+      "emission": {
+        "eirp_dBm": 95,
+        "center_freq_MHz": 3200,
+        "bandwidth_MHz": 10,
+        "polarization": "H",
+        "duty_cycle": 1.0
+      },
+      "antenna": {
+        "pattern": {
+          "type": "simplified_directional",
+          "hpbw_deg": 3.0,
+          "vpbw_deg": 3.0,
+          "sidelobe_template": "MIL-STD-20"
+        },
+        "pointing": {
+          "az_deg": 0.0,
+          "el_deg": 0.0
+        },
+        "scan": {
+          "mode": "none",
+          "rpm": 0,
+          "sector_deg": 0
+        }
+      }
+    }
+  ]
+}
