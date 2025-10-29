@@ -1,53 +1,136 @@
 {
-  "region": {
-    "crs": "WGS84",
-    "polygon": [
-      { "lat": 23.70, "lon": 113.90 },
-      { "lat": 23.70, "lon": 114.20 },
-      { "lat": 23.50, "lon": 114.20 },
-      { "lat": 23.50, "lon": 113.90 }
-    ]
-  },
-  "grid": { "resolution_deg": 0.01, "alt_m": 80 },
-  "influence_buffer_km": 150,
-  "environment": {
-    "propagation": { "model": "free_space" },
-    "atmosphere": { "gas_loss": "auto", "rain_rate_mmph": 5, "fog_lwc_gm3": 0.5 },
-    "earth": { "k_factor": 1.3333333333 }
-  },
-  "bands": [
-    { "name": "VHF", "f_min_MHz": 100, "f_max_MHz": 300, "ref_bw_kHz": 1000 },
-    { "name": "UHF", "f_min_MHz": 300, "f_max_MHz": 1000, "ref_bw_kHz": 1000 },
-    { "name": "L", "f_min_MHz": 1000, "f_max_MHz": 2000, "ref_bw_kHz": 1000 }
-  ],
-  "metric": "E_field_dBuV_per_m",
-  "combine_sources": "power_sum",
-  "temporal_agg": "peak",
-  "limits": { "max_sources": 50, "max_region_km": 200 },
-  "sources": [
-    {
-      "id": "comm_base",
-      "type": "comm",
-      "position": { "lat": 23.62, "lon": 114.05, "alt_m": 120 },
-      "emission": { "eirp_dBm": 65, "center_freq_MHz": 250, "bandwidth_MHz": 0.5, "polarization": "V", "duty_cycle": 1.0 },
-      "antenna": {
-        "pattern": { "type": "simplified_directional", "hpbw_deg": 25.0, "vpbw_deg": 40.0, "sidelobe_template": "Comm-Omni-Back-10" },
-        "pointing_az_deg": 90,
-        "pointing_el_deg": -1,
-        "scan": { "mode": "none", "rpm": 0, "sector_deg": 0 }
-      }
-    },
-    {
-      "id": "jammer_uav",
-      "type": "jammer",
-      "position": { "lat": 23.58, "lon": 113.98, "alt_m": 2000 },
-      "emission": { "eirp_dBm": 82, "center_freq_MHz": 1200, "bandwidth_MHz": 30, "polarization": "H", "duty_cycle": 0.6 },
-      "antenna": {
-        "pattern": { "type": "simplified_directional", "hpbw_deg": 6.0, "vpbw_deg": 6.0, "sidelobe_template": "MIL-STD-20" },
-        "pointing_az_deg": 210,
-        "pointing_el_deg": -5,
-        "scan": { "mode": "circular", "rpm": 18, "sector_deg": 360 }
-      }
-    }
-  ]
+    "region":  {
+                   "crs":  "WGS84",
+                   "polygon":  [
+                                   {
+                                       "lat":  23.70,
+                                       "lon":  113.90
+                                   },
+                                   {
+                                       "lat":  23.70,
+                                       "lon":  114.20
+                                   },
+                                   {
+                                       "lat":  23.50,
+                                       "lon":  114.20
+                                   },
+                                   {
+                                       "lat":  23.50,
+                                       "lon":  113.90
+                                   }
+                               ]
+               },
+    "grid":  {
+                 "resolution_deg":  0.01,
+                 "alt_m":  80
+             },
+    "influence_buffer_km":  150,
+    "environment":  {
+                        "propagation":  {
+                                            "model":  "free_space"
+                                        },
+                        "atmosphere":  {
+                                           "gas_loss":  "auto",
+                                           "rain_rate_mmph":  5,
+                                           "fog_lwc_gm3":  0.5
+                                       },
+                        "earth":  {
+                                      "k_factor":  1.3333333333
+                                  }
+                    },
+    "bands":  [
+                  {
+                      "name":  "VHF",
+                      "f_min_MHz":  100,
+                      "f_max_MHz":  300,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "UHF",
+                      "f_min_MHz":  300,
+                      "f_max_MHz":  1000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "L",
+                      "f_min_MHz":  1000,
+                      "f_max_MHz":  2000,
+                      "ref_bw_kHz":  1000
+                  }
+              ],
+    "metric":  "E_field_dBuV_per_m",
+    "combine_sources":  "power_sum",
+    "temporal_agg":  "peak",
+    "limits":  {
+                   "max_sources":  50,
+                   "max_region_km":  200
+               },
+    "sources":  [
+                    {
+                        "id":  "comm_base",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  23.62,
+                                         "lon":  114.05,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  65,
+                                         "center_freq_MHz":  250,
+                                         "bandwidth_MHz":  0.5,
+                                         "polarization":  "V",
+                                         "duty_cycle":  1.0
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  14.180112455124089,
+                                                        "vpbw_deg":  12.438806582446585,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  0.66203825206590738,
+                                                         "el_deg":  13.403019373492814
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "jammer_uav",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  23.58,
+                                         "lon":  113.98,
+                                         "alt_m":  2000
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  82,
+                                         "center_freq_MHz":  1200,
+                                         "bandwidth_MHz":  30,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  24.148100600646856,
+                                                        "vpbw_deg":  13.337401594192443,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  308.28262894800054,
+                                                         "el_deg":  9.3491955121742549
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    }
+                ]
 }

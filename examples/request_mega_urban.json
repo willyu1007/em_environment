@@ -1,0 +1,874 @@
+{
+    "region":  {
+                   "crs":  "WGS84",
+                   "polygon":  [
+                                   {
+                                       "lat":  39.95,
+                                       "lon":  116.1
+                                   },
+                                   {
+                                       "lat":  39.95,
+                                       "lon":  116.7
+                                   },
+                                   {
+                                       "lat":  39.45,
+                                       "lon":  116.7
+                                   },
+                                   {
+                                       "lat":  39.45,
+                                       "lon":  116.1
+                                   }
+                               ]
+               },
+    "grid":  {
+                 "resolution_deg":  0.008,
+                 "alt_m":  150
+             },
+    "influence_buffer_km":  200,
+    "environment":  {
+                        "propagation":  {
+                                            "model":  "free_space"
+                                        },
+                        "atmosphere":  {
+                                           "gas_loss":  "auto",
+                                           "rain_rate_mmph":  1.5,
+                                           "fog_lwc_gm3":  0.3
+                                       },
+                        "earth":  {
+                                      "k_factor":  1.3333333333
+                                  }
+                    },
+    "bands":  [
+                  {
+                      "name":  "VHF",
+                      "f_min_MHz":  100,
+                      "f_max_MHz":  300,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "UHF",
+                      "f_min_MHz":  300,
+                      "f_max_MHz":  1000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "L",
+                      "f_min_MHz":  1000,
+                      "f_max_MHz":  2000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "S",
+                      "f_min_MHz":  2000,
+                      "f_max_MHz":  4000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "C",
+                      "f_min_MHz":  4000,
+                      "f_max_MHz":  8000,
+                      "ref_bw_kHz":  1000
+                  }
+              ],
+    "metric":  "E_field_dBuV_per_m",
+    "combine_sources":  "power_sum",
+    "temporal_agg":  "peak",
+    "limits":  {
+                   "max_sources":  80,
+                   "max_region_km":  240
+               },
+    "sources":  [
+                    {
+                        "id":  "urban_00",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  39.5,
+                                         "lon":  116.2,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  70,
+                                         "center_freq_MHz":  220.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.3
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  14.164735260961919,
+                                                        "vpbw_deg":  12.680520550199095,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  294.29581836531673,
+                                                         "el_deg":  -10.667704001845653
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_01",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.5,
+                                         "lon":  116.27,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  75,
+                                         "center_freq_MHz":  450.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  14.028768335948124,
+                                                        "vpbw_deg":  13.440906686447983,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  280.16244567938264,
+                                                         "el_deg":  8.5760226257033771
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_02",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  39.5,
+                                         "lon":  116.34,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  80,
+                                         "center_freq_MHz":  1350.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  26.660141644375464,
+                                                        "vpbw_deg":  12.545214220204025,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  211.22745141909803,
+                                                         "el_deg":  14.991594417948086
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  120
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_03",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.5,
+                                         "lon":  116.41,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  85,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  19.557520341387729,
+                                                        "vpbw_deg":  20.705504393533573,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  153.44454412974628,
+                                                         "el_deg":  1.0910422942093767
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_04",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  39.5,
+                                         "lon":  116.48,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  90,
+                                         "center_freq_MHz":  5200.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.3
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  30.510521806082931,
+                                                        "vpbw_deg":  22.656845416248238,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  45.935432988188893,
+                                                         "el_deg":  -13.227360862413123
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_05",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.5,
+                                         "lon":  116.55,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  95,
+                                         "center_freq_MHz":  6500.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  33.657357241333159,
+                                                        "vpbw_deg":  16.5799794106651,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  52.136566290695484,
+                                                         "el_deg":  -14.128282446939629
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_06",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  39.57,
+                                         "lon":  116.2,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  72,
+                                         "center_freq_MHz":  220.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  32.218675647498422,
+                                                        "vpbw_deg":  21.65617829452091,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  33.372159243268968,
+                                                         "el_deg":  -7.5286760518926554
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  120
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_07",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.57,
+                                         "lon":  116.27,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  77,
+                                         "center_freq_MHz":  450.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  19.9532823147966,
+                                                        "vpbw_deg":  16.184354408729988,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  336.08545089889571,
+                                                         "el_deg":  -9.6042783253846125
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_08",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  39.57,
+                                         "lon":  116.34,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  82,
+                                         "center_freq_MHz":  1350.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.3
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  22.174942275590702,
+                                                        "vpbw_deg":  15.207380646470646,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  0.77768622002456633,
+                                                         "el_deg":  11.713329421688488
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_09",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.57,
+                                         "lon":  116.41,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  87,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  26.697219319034936,
+                                                        "vpbw_deg":  10.224358629074114,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  319.24755942041406,
+                                                         "el_deg":  12.868671146160306
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_10",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  39.57,
+                                         "lon":  116.48,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  92,
+                                         "center_freq_MHz":  5200.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  20.949208512878606,
+                                                        "vpbw_deg":  19.931805109573439,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  332.222267935156,
+                                                         "el_deg":  7.3347324190357384
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  120
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_11",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.57,
+                                         "lon":  116.55,
+                                         "alt_m":  120
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  97,
+                                         "center_freq_MHz":  6500.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  27.211498608445517,
+                                                        "vpbw_deg":  13.260714908717533,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  4.750391824520376,
+                                                         "el_deg":  6.042305743807141
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_12",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  39.64,
+                                         "lon":  116.2,
+                                         "alt_m":  140
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  74,
+                                         "center_freq_MHz":  220.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.3
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  33.640096860304524,
+                                                        "vpbw_deg":  11.667226468523605,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  60.2165137511755,
+                                                         "el_deg":  13.138745538023649
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_13",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.64,
+                                         "lon":  116.27,
+                                         "alt_m":  140
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  79,
+                                         "center_freq_MHz":  450.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  28.53650537903258,
+                                                        "vpbw_deg":  18.220603339942453,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  266.65840790917093,
+                                                         "el_deg":  -2.3262369154608979
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_14",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  39.64,
+                                         "lon":  116.34,
+                                         "alt_m":  140
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  84,
+                                         "center_freq_MHz":  1350.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  19.551024385053211,
+                                                        "vpbw_deg":  19.707494295065985,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  47.910939607727784,
+                                                         "el_deg":  -12.124480310419798
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  120
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_15",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.64,
+                                         "lon":  116.41,
+                                         "alt_m":  140
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  89,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  16.200028406549258,
+                                                        "vpbw_deg":  9.270561113613919,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  192.34904562698168,
+                                                         "el_deg":  -14.66294049735318
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_16",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  39.64,
+                                         "lon":  116.48,
+                                         "alt_m":  140
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  94,
+                                         "center_freq_MHz":  5200.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.3
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  29.741497931881575,
+                                                        "vpbw_deg":  9.9910661969292285,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  280.02471961082176,
+                                                         "el_deg":  10.054153425178562
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_17",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.64,
+                                         "lon":  116.55,
+                                         "alt_m":  140
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  99,
+                                         "center_freq_MHz":  6500.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  26.90322929057443,
+                                                        "vpbw_deg":  21.183900631118519,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  19.43010852645622,
+                                                         "el_deg":  8.45915376369802
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_18",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  39.71,
+                                         "lon":  116.2,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  76,
+                                         "center_freq_MHz":  220.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  21.001724451315461,
+                                                        "vpbw_deg":  11.411133320262252,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  129.36351316485718,
+                                                         "el_deg":  2.4604289640953887
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  120
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_19",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.71,
+                                         "lon":  116.27,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  81,
+                                         "center_freq_MHz":  450.0,
+                                         "bandwidth_MHz":  1.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  13.752482167329864,
+                                                        "vpbw_deg":  21.4034779683703,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  116.00489387102652,
+                                                         "el_deg":  10.016228791799502
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_20",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  39.71,
+                                         "lon":  116.34,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  86,
+                                         "center_freq_MHz":  1350.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.3
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  12.956023684216674,
+                                                        "vpbw_deg":  19.142888528827058,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  274.58197118462158,
+                                                         "el_deg":  -2.3566382040067761
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_21",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.71,
+                                         "lon":  116.41,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  91,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  8.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  29.856369685314768,
+                                                        "vpbw_deg":  24.2859036132162,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  299.80980106620575,
+                                                         "el_deg":  -11.57545140319292
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_22",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  39.71,
+                                         "lon":  116.48,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  96,
+                                         "center_freq_MHz":  5200.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  27.757629450763403,
+                                                        "vpbw_deg":  16.185191448398491,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  252.90824410175358,
+                                                         "el_deg":  -7.999098032246855
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  120
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "urban_23",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  39.71,
+                                         "lon":  116.55,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  101,
+                                         "center_freq_MHz":  6500.0,
+                                         "bandwidth_MHz":  20.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.8
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  21.002455583774697,
+                                                        "vpbw_deg":  18.530835159835796,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  234.60381125780003,
+                                                         "el_deg":  1.924474093562214
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    }
+                ]
+}

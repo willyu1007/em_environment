@@ -31,8 +31,7 @@
       "emission": { "eirp_dBm": 95, "center_freq_MHz": 3200, "bandwidth_MHz": 10, "polarization": "H", "duty_cycle": 0.1 },
       "antenna": {
         "pattern": { "type": "simplified_directional", "hpbw_deg": 3.0, "vpbw_deg": 3.0, "sidelobe_template": "MIL-STD-20" },
-        "pointing_az_deg": 45,
-        "pointing_el_deg": 0,
+        "pointing": { "az_deg": 45, "el_deg": 0 },
         "scan": { "mode": "circular", "rpm": 12, "sector_deg": 360 }
       }
     }

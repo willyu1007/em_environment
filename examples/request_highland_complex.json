@@ -1,0 +1,808 @@
+{
+    "region":  {
+                   "crs":  "WGS84",
+                   "polygon":  [
+                                   {
+                                       "lat":  34.8,
+                                       "lon":  102.3
+                                   },
+                                   {
+                                       "lat":  34.8,
+                                       "lon":  103.2
+                                   },
+                                   {
+                                       "lat":  34.2,
+                                       "lon":  103.2
+                                   },
+                                   {
+                                       "lat":  34.2,
+                                       "lon":  102.3
+                                   }
+                               ]
+               },
+    "grid":  {
+                 "resolution_deg":  0.012,
+                 "alt_m":  900
+             },
+    "influence_buffer_km":  210,
+    "environment":  {
+                        "propagation":  {
+                                            "model":  "two_ray_flat"
+                                        },
+                        "atmosphere":  {
+                                           "gas_loss":  "auto",
+                                           "rain_rate_mmph":  0.5,
+                                           "fog_lwc_gm3":  0.15
+                                       },
+                        "earth":  {
+                                      "k_factor":  1.3333333333
+                                  }
+                    },
+    "bands":  [
+                  {
+                      "name":  "UHF",
+                      "f_min_MHz":  300,
+                      "f_max_MHz":  1000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "L",
+                      "f_min_MHz":  1000,
+                      "f_max_MHz":  2000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "S",
+                      "f_min_MHz":  2000,
+                      "f_max_MHz":  4000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "X",
+                      "f_min_MHz":  8000,
+                      "f_max_MHz":  12000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "Ku",
+                      "f_min_MHz":  12000,
+                      "f_max_MHz":  18000,
+                      "ref_bw_kHz":  1000
+                  }
+              ],
+    "metric":  "E_field_dBuV_per_m",
+    "combine_sources":  "power_sum",
+    "temporal_agg":  "peak",
+    "limits":  {
+                   "max_sources":  70,
+                   "max_region_km":  250
+               },
+    "sources":  [
+                    {
+                        "id":  "highland_00",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.25,
+                                         "lon":  102.4,
+                                         "alt_m":  1200
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  80,
+                                         "center_freq_MHz":  420.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  15.054581288273717,
+                                                        "vpbw_deg":  22.267551848323805,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  329.8352722310625,
+                                                         "el_deg":  9.14653893287598
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_01",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.25,
+                                         "lon":  102.49,
+                                         "alt_m":  1200
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  84,
+                                         "center_freq_MHz":  950.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  23.7312518310413,
+                                                        "vpbw_deg":  19.831401885874293,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  129.08457415601453,
+                                                         "el_deg":  -2.6810510212932943
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_02",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  34.25,
+                                         "lon":  102.58,
+                                         "alt_m":  1200
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  88,
+                                         "center_freq_MHz":  1450.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  23.891106347037066,
+                                                        "vpbw_deg":  21.499313298845344,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  193.92359049707821,
+                                                         "el_deg":  12.855407468907259
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  90
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_03",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.25,
+                                         "lon":  102.67,
+                                         "alt_m":  1200
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  92,
+                                         "center_freq_MHz":  2500.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  24.24451080162288,
+                                                        "vpbw_deg":  21.499831290217038,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  176.53135414073773,
+                                                         "el_deg":  4.8808142588850174
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_04",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.25,
+                                         "lon":  102.76,
+                                         "alt_m":  1200
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  96,
+                                         "center_freq_MHz":  3500.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  21.637225245422322,
+                                                        "vpbw_deg":  21.369052124381554,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  351.41600494804607,
+                                                         "el_deg":  -4.2278313679750212
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_05",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.33,
+                                         "lon":  102.4,
+                                         "alt_m":  1280
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  83,
+                                         "center_freq_MHz":  9200.0,
+                                         "bandwidth_MHz":  18.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  24.194008693189364,
+                                                        "vpbw_deg":  22.03457263020546,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  49.762673848198112,
+                                                         "el_deg":  -13.396541922537862
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_06",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.33,
+                                         "lon":  102.49,
+                                         "alt_m":  1280
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  87,
+                                         "center_freq_MHz":  14500.0,
+                                         "bandwidth_MHz":  18.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  22.271284584547992,
+                                                        "vpbw_deg":  13.658917209440339,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  163.74663017864648,
+                                                         "el_deg":  -5.9611816196521659
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_07",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  34.33,
+                                         "lon":  102.58,
+                                         "alt_m":  1280
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  91,
+                                         "center_freq_MHz":  420.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  13.588587610325119,
+                                                        "vpbw_deg":  9.0701967249951316,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  185.73278230881914,
+                                                         "el_deg":  -8.9916321141606339
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  90
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_08",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.33,
+                                         "lon":  102.67,
+                                         "alt_m":  1280
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  95,
+                                         "center_freq_MHz":  950.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  13.333556088308598,
+                                                        "vpbw_deg":  24.496177110120737,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  268.13849459781244,
+                                                         "el_deg":  8.1571587096700249
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_09",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.33,
+                                         "lon":  102.76,
+                                         "alt_m":  1280
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  99,
+                                         "center_freq_MHz":  1450.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  19.769035135753935,
+                                                        "vpbw_deg":  19.837717329076359,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  69.940875279689621,
+                                                         "el_deg":  1.3524994469957896
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_10",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.41,
+                                         "lon":  102.4,
+                                         "alt_m":  1360
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  86,
+                                         "center_freq_MHz":  2500.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  24.130117034134511,
+                                                        "vpbw_deg":  14.610284620714506,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  254.87386409885897,
+                                                         "el_deg":  14.693262073999858
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_11",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.41,
+                                         "lon":  102.49,
+                                         "alt_m":  1360
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  90,
+                                         "center_freq_MHz":  3500.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  18.481836626064887,
+                                                        "vpbw_deg":  19.365611060227085,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  129.96632472144734,
+                                                         "el_deg":  10.485352527110539
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_12",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  34.41,
+                                         "lon":  102.58,
+                                         "alt_m":  1360
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  94,
+                                         "center_freq_MHz":  9200.0,
+                                         "bandwidth_MHz":  18.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  29.3637485496531,
+                                                        "vpbw_deg":  22.705060767803836,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  193.0286414516292,
+                                                         "el_deg":  0.73256327106271257
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  90
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_13",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.41,
+                                         "lon":  102.67,
+                                         "alt_m":  1360
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  98,
+                                         "center_freq_MHz":  14500.0,
+                                         "bandwidth_MHz":  18.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  22.161137693636647,
+                                                        "vpbw_deg":  24.222762401319464,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  24.873203628171797,
+                                                         "el_deg":  -2.8431261413931512
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_14",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.41,
+                                         "lon":  102.76,
+                                         "alt_m":  1360
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  102,
+                                         "center_freq_MHz":  420.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  30.83832973793071,
+                                                        "vpbw_deg":  18.696311815500405,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  303.40076026665082,
+                                                         "el_deg":  0.99845737032520354
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_15",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.49,
+                                         "lon":  102.4,
+                                         "alt_m":  1440
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  89,
+                                         "center_freq_MHz":  950.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  27.905596223150191,
+                                                        "vpbw_deg":  12.448558814566843,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  134.01503725630002,
+                                                         "el_deg":  3.9516755980214455
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_16",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.49,
+                                         "lon":  102.49,
+                                         "alt_m":  1440
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  93,
+                                         "center_freq_MHz":  1450.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  25.382893369245757,
+                                                        "vpbw_deg":  11.209804020919746,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  356.52935044678361,
+                                                         "el_deg":  -4.35707141615314
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_17",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  34.49,
+                                         "lon":  102.58,
+                                         "alt_m":  1440
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  97,
+                                         "center_freq_MHz":  2500.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  13.605088915957644,
+                                                        "vpbw_deg":  16.534513029518777,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  134.04565031362961,
+                                                         "el_deg":  -3.3352539540898309
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  90
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_18",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.49,
+                                         "lon":  102.67,
+                                         "alt_m":  1440
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  101,
+                                         "center_freq_MHz":  3500.0,
+                                         "bandwidth_MHz":  6.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  23.518995076193939,
+                                                        "vpbw_deg":  21.715201604047419,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  280.94130687459432,
+                                                         "el_deg":  4.8722594510169053
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_19",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.49,
+                                         "lon":  102.76,
+                                         "alt_m":  1440
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  105,
+                                         "center_freq_MHz":  9200.0,
+                                         "bandwidth_MHz":  18.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  14.153641904310156,
+                                                        "vpbw_deg":  22.887941661238642,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  221.85613379900161,
+                                                         "el_deg":  -1.5549069580412045
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_20",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  34.57,
+                                         "lon":  102.4,
+                                         "alt_m":  1520
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  92,
+                                         "center_freq_MHz":  14500.0,
+                                         "bandwidth_MHz":  18.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.4
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  25.79323330884484,
+                                                        "vpbw_deg":  22.219744626534983,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  213.52093794081404,
+                                                         "el_deg":  -1.1605195962640078
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "highland_21",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  34.57,
+                                         "lon":  102.49,
+                                         "alt_m":  1520
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  96,
+                                         "center_freq_MHz":  420.0,
+                                         "bandwidth_MHz":  2.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.75
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  31.666454455194273,
+                                                        "vpbw_deg":  20.484987501280841,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  177.19245328437185,
+                                                         "el_deg":  12.392662836887251
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    }
+                ]
+}

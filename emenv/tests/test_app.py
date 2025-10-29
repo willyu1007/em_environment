@@ -52,8 +52,7 @@ def _sample_request_dict() -> dict:
                         "vpbw_deg": 3.0,
                         "sidelobe_template": "MIL-STD-20",
                     },
-                    "pointing_az_deg": 0.0,
-                    "pointing_el_deg": 0.0,
+                    "pointing": {"az_deg": 0.0, "el_deg": 0.0},
                     "scan": {"mode": "circular", "rpm": 12.0, "sector_deg": 360.0},
                 },
             }
@@ -86,9 +85,20 @@ def test_rest_compute_and_query():
     assert resp.status_code == 200
     assert resp.json()["bands"] == ["S"]
 
-    query_payload = {"lat": 33.9, "lon": 118.1, "band": "S"}
+    query_payload = {"lat": 33.9, "lon": 118.1, "alt_m": 0.0, "band": "S"}
     query_resp = client.post("/query", json=query_payload)
     assert query_resp.status_code == 200
     result = query_resp.json()
     assert result["band"] == "S"
+    assert result["alt_m"] == 0.0
     assert np.isfinite(result["field_strength_dbuv_per_m"])
+
+
+def test_rest_query_alt_mismatch():
+    client = TestClient(app)
+    payload = _sample_request_dict()
+    client.post("/compute", json=payload)
+
+    query_payload = {"lat": 33.9, "lon": 118.1, "alt_m": 100.0, "band": "S"}
+    query_resp = client.post("/query", json=query_payload)
+    assert query_resp.status_code == 404

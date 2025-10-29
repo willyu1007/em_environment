@@ -1,3 +1,5 @@
+import numpy as np
+
 from emenv.api_models import (
     Antenna,
     AntennaPattern,
@@ -11,6 +13,7 @@ from emenv.api_models import (
     SourcePosition,
     Emission,
 )
+from emenv.config import EngineConfig
 from emenv.engine import ComputeEngine
 
 
@@ -37,6 +40,7 @@ def build_simple_request() -> ComputeRequest:
         ),
         antenna=Antenna(
             pattern=AntennaPattern(hpbw_deg=3.0, vpbw_deg=3.0),
+            pointing={"az_deg": 0.0, "el_deg": 0.0},
             scan=ScanSpec(mode="circular", rpm=12.0, sector_deg=360.0),
         ),
     )
@@ -55,3 +59,16 @@ def test_engine_basic_compute():
     assert band_result.topk_indices.shape[0] == expected_top
     assert band_result.topk_power_W_m2.shape == (expected_top,) + result.grid.shape
     assert band_result.topk_fraction.shape == (expected_top,) + result.grid.shape
+
+
+def test_engine_threshold_masks_topk():
+    request = build_simple_request()
+    config = EngineConfig(threshold_dbuv_per_m=200.0)
+    engine = ComputeEngine(config=config)
+    result = engine.compute(request)
+    band_result = result.band_results["S"]
+
+    assert np.isnan(band_result.field_strength_dbuv_per_m).all()
+    assert (band_result.topk_indices == -1).all()
+    assert np.isnan(band_result.topk_power_W_m2).all()
+    assert np.isnan(band_result.topk_fraction).all()

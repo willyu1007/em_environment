@@ -13,11 +13,23 @@ from ..service import ComputeService
 
 
 def load_request(path: Path) -> ComputeRequest:
+    """Load a compute request JSON file.
+
+    参数
+    ----
+    path : Path
+        JSON 文件路径，内容需符合 :class:`ComputeRequest` 结构，单位规范与 API 模型一致。
+    """
     data = json.loads(path.read_text(encoding="utf-8"))
     return ComputeRequest(**data)
 
 
 def main() -> None:
+    """Entry point for command-line batch runs.
+
+    支持读取 JSON 请求、执行计算以及输出统计信息，可选写入 GeoTIFF/Parquet。
+    该入口与服务化接口共享同一计算引擎，方便在 CI 或离线环境复用。
+    """
     parser = argparse.ArgumentParser(description="EM environment compute CLI")
     parser.add_argument("input", type=Path, help="Path to JSON request file.")
     parser.add_argument("--band", type=str, help="Band name to summarize (defaults to first band).")

@@ -1,0 +1,913 @@
+{
+    "region":  {
+                   "crs":  "WGS84",
+                   "polygon":  [
+                                   {
+                                       "lat":  21.4,
+                                       "lon":  121.0
+                                   },
+                                   {
+                                       "lat":  21.4,
+                                       "lon":  121.8
+                                   },
+                                   {
+                                       "lat":  20.8,
+                                       "lon":  121.8
+                                   },
+                                   {
+                                       "lat":  20.8,
+                                       "lon":  121.0
+                                   }
+                               ]
+               },
+    "grid":  {
+                 "resolution_deg":  0.015,
+                 "alt_m":  60
+             },
+    "influence_buffer_km":  230,
+    "environment":  {
+                        "propagation":  {
+                                            "model":  "two_ray_flat"
+                                        },
+                        "atmosphere":  {
+                                           "gas_loss":  "auto",
+                                           "rain_rate_mmph":  3.5,
+                                           "fog_lwc_gm3":  0.25
+                                       },
+                        "earth":  {
+                                      "k_factor":  1.3333333333
+                                  }
+                    },
+    "bands":  [
+                  {
+                      "name":  "HF",
+                      "f_min_MHz":  3,
+                      "f_max_MHz":  30,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "VHF",
+                      "f_min_MHz":  100,
+                      "f_max_MHz":  300,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "UHF",
+                      "f_min_MHz":  300,
+                      "f_max_MHz":  1000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "L",
+                      "f_min_MHz":  1000,
+                      "f_max_MHz":  2000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "S",
+                      "f_min_MHz":  2000,
+                      "f_max_MHz":  4000,
+                      "ref_bw_kHz":  1000
+                  },
+                  {
+                      "name":  "X",
+                      "f_min_MHz":  8000,
+                      "f_max_MHz":  12000,
+                      "ref_bw_kHz":  1000
+                  }
+              ],
+    "metric":  "E_field_dBuV_per_m",
+    "combine_sources":  "power_sum",
+    "temporal_agg":  "peak",
+    "limits":  {
+                   "max_sources":  80,
+                   "max_region_km":  260
+               },
+    "sources":  [
+                    {
+                        "id":  "maritime_00",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  20.85,
+                                         "lon":  121.05,
+                                         "alt_m":  40
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  65,
+                                         "center_freq_MHz":  12.0,
+                                         "bandwidth_MHz":  0.05,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  20.823143808554459,
+                                                        "vpbw_deg":  19.142370537455367,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  305.40654952889611,
+                                                         "el_deg":  -13.294831494938038
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_01",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  20.85,
+                                         "lon":  121.17,
+                                         "alt_m":  40
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  71,
+                                         "center_freq_MHz":  150.0,
+                                         "bandwidth_MHz":  0.5,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  25.081820755303752,
+                                                        "vpbw_deg":  20.576330293238318,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  194.62559148418975,
+                                                         "el_deg":  3.8730133366179729
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_02",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  20.85,
+                                         "lon":  121.29,
+                                         "alt_m":  40
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  77,
+                                         "center_freq_MHz":  320.0,
+                                         "bandwidth_MHz":  3.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  25.073400924016443,
+                                                        "vpbw_deg":  8.0115460762807853,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  195.01206880203077,
+                                                         "el_deg":  7.0553724710156089
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  150
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_03",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  20.85,
+                                         "lon":  121.41,
+                                         "alt_m":  40
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  83,
+                                         "center_freq_MHz":  850.0,
+                                         "bandwidth_MHz":  3.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  16.557774951475565,
+                                                        "vpbw_deg":  18.344133721824797,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  4.2989788969508274,
+                                                         "el_deg":  -3.8035719370486092
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_04",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  20.85,
+                                         "lon":  121.53,
+                                         "alt_m":  40
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  89,
+                                         "center_freq_MHz":  1600.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  16.619398937849049,
+                                                        "vpbw_deg":  11.18867698041195,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  180.31567278332807,
+                                                         "el_deg":  -7.1965432782641345
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_05",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  20.95,
+                                         "lon":  121.05,
+                                         "alt_m":  70
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  69,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  22.4982839000869,
+                                                        "vpbw_deg":  17.8942508929848,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  2.9146790890557126,
+                                                         "el_deg":  12.580679025305749
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_06",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  20.95,
+                                         "lon":  121.17,
+                                         "alt_m":  70
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  75,
+                                         "center_freq_MHz":  3600.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  31.389256547852074,
+                                                        "vpbw_deg":  21.46660822418826,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  195.21794141978862,
+                                                         "el_deg":  10.601796356775704
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_07",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  20.95,
+                                         "lon":  121.29,
+                                         "alt_m":  70
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  81,
+                                         "center_freq_MHz":  9500.0,
+                                         "bandwidth_MHz":  30.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  13.810154589735975,
+                                                        "vpbw_deg":  14.058692134944113,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  341.47437225164583,
+                                                         "el_deg":  -2.9409366929628593
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  150
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_08",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  20.95,
+                                         "lon":  121.41,
+                                         "alt_m":  70
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  87,
+                                         "center_freq_MHz":  12.0,
+                                         "bandwidth_MHz":  0.05,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  32.140850348463673,
+                                                        "vpbw_deg":  16.664277602296451,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  355.11891066800752,
+                                                         "el_deg":  -6.0939764888463426
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_09",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  20.95,
+                                         "lon":  121.53,
+                                         "alt_m":  70
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  93,
+                                         "center_freq_MHz":  150.0,
+                                         "bandwidth_MHz":  0.5,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  26.825409089599461,
+                                                        "vpbw_deg":  14.483270213698628,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  301.28230447940632,
+                                                         "el_deg":  -12.919200834780559
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_10",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  21.05,
+                                         "lon":  121.05,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  73,
+                                         "center_freq_MHz":  320.0,
+                                         "bandwidth_MHz":  3.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  18.648550624329854,
+                                                        "vpbw_deg":  13.308167102890167,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  276.45030544905472,
+                                                         "el_deg":  -8.2107032291641
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_11",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  21.05,
+                                         "lon":  121.17,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  79,
+                                         "center_freq_MHz":  850.0,
+                                         "bandwidth_MHz":  3.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  20.971336769858066,
+                                                        "vpbw_deg":  19.056117991942969,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  12.785354113571977,
+                                                         "el_deg":  -14.760333574265397
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_12",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  21.05,
+                                         "lon":  121.29,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  85,
+                                         "center_freq_MHz":  1600.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  32.235744315774994,
+                                                        "vpbw_deg":  18.897252696518436,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  317.83272333342245,
+                                                         "el_deg":  2.8174078221513916
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  150
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_13",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  21.05,
+                                         "lon":  121.41,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  91,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  24.663103236194281,
+                                                        "vpbw_deg":  17.0278667528312,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  219.66643099657557,
+                                                         "el_deg":  -11.49880063091349
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_14",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  21.05,
+                                         "lon":  121.53,
+                                         "alt_m":  100
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  97,
+                                         "center_freq_MHz":  3600.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  15.438574454951368,
+                                                        "vpbw_deg":  18.661670966381987,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  132.70216987128472,
+                                                         "el_deg":  -4.5219543061787046
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_15",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  21.15,
+                                         "lon":  121.05,
+                                         "alt_m":  130
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  77,
+                                         "center_freq_MHz":  9500.0,
+                                         "bandwidth_MHz":  30.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  27.462886870588591,
+                                                        "vpbw_deg":  23.814568322996873,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  281.88875731168724,
+                                                         "el_deg":  -11.719283338971103
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_16",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  21.15,
+                                         "lon":  121.17,
+                                         "alt_m":  130
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  83,
+                                         "center_freq_MHz":  12.0,
+                                         "bandwidth_MHz":  0.05,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  13.536480791185275,
+                                                        "vpbw_deg":  24.609944359217746,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  157.30624701702325,
+                                                         "el_deg":  -0.78083980632053773
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_17",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  21.15,
+                                         "lon":  121.29,
+                                         "alt_m":  130
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  89,
+                                         "center_freq_MHz":  150.0,
+                                         "bandwidth_MHz":  0.5,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  30.989744844375991,
+                                                        "vpbw_deg":  14.181177208750125,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  156.03233821505324,
+                                                         "el_deg":  3.9614351368329643
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  150
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_18",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  21.15,
+                                         "lon":  121.41,
+                                         "alt_m":  130
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  95,
+                                         "center_freq_MHz":  320.0,
+                                         "bandwidth_MHz":  3.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  31.768990007121577,
+                                                        "vpbw_deg":  21.999188873450827,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  248.50690691196681,
+                                                         "el_deg":  -10.35345503844016
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_19",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  21.15,
+                                         "lon":  121.53,
+                                         "alt_m":  130
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  101,
+                                         "center_freq_MHz":  850.0,
+                                         "bandwidth_MHz":  3.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  15.795961276067402,
+                                                        "vpbw_deg":  20.432493072670184,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  326.60099318558395,
+                                                         "el_deg":  -3.8962186774687009
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_20",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  21.25,
+                                         "lon":  121.05,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  81,
+                                         "center_freq_MHz":  1600.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  16.558037876411358,
+                                                        "vpbw_deg":  13.018713755541814,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  297.96816115172959,
+                                                         "el_deg":  0.86101877310360742
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_21",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  21.25,
+                                         "lon":  121.17,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  87,
+                                         "center_freq_MHz":  2800.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "V",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  25.098536779218605,
+                                                        "vpbw_deg":  20.541500451761067,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  199.31699130652331,
+                                                         "el_deg":  1.8193794446156275
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_22",
+                        "type":  "jammer",
+                        "position":  {
+                                         "lat":  21.25,
+                                         "lon":  121.29,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  93,
+                                         "center_freq_MHz":  3600.0,
+                                         "bandwidth_MHz":  12.0,
+                                         "polarization":  "RHCP",
+                                         "duty_cycle":  0.6
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  15.574010699789044,
+                                                        "vpbw_deg":  20.726095599460457,
+                                                        "sidelobe_template":  "MIL-STD-20"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  233.98339518997045,
+                                                         "el_deg":  3.0389185566636385
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  150
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_23",
+                        "type":  "radar",
+                        "position":  {
+                                         "lat":  21.25,
+                                         "lon":  121.41,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  99,
+                                         "center_freq_MHz":  9500.0,
+                                         "bandwidth_MHz":  30.0,
+                                         "polarization":  "LHCP",
+                                         "duty_cycle":  0.35
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  32.298997646336908,
+                                                        "vpbw_deg":  18.572140233857624,
+                                                        "sidelobe_template":  "Radar-Narrow-25"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  186.8351001417428,
+                                                         "el_deg":  4.3151101280539805
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  360
+                                                 }
+                                    }
+                    },
+                    {
+                        "id":  "maritime_24",
+                        "type":  "comm",
+                        "position":  {
+                                         "lat":  21.25,
+                                         "lon":  121.53,
+                                         "alt_m":  160
+                                     },
+                        "emission":  {
+                                         "eirp_dBm":  105,
+                                         "center_freq_MHz":  12.0,
+                                         "bandwidth_MHz":  0.05,
+                                         "polarization":  "H",
+                                         "duty_cycle":  0.9
+                                     },
+                        "antenna":  {
+                                        "pattern":  {
+                                                        "type":  "simplified_directional",
+                                                        "hpbw_deg":  25.585378535830127,
+                                                        "vpbw_deg":  17.817314173009859,
+                                                        "sidelobe_template":  "Comm-Omni-Back-10"
+                                                    },
+                                        "pointing":  {
+                                                         "az_deg":  138.72620881475797,
+                                                         "el_deg":  2.7347949322940757
+                                                     },
+                                        "scan":  {
+                                                     "mode":  "none",
+                                                     "rpm":  0,
+                                                     "sector_deg":  0
+                                                 }
+                                    }
+                    }
+                ]
+}

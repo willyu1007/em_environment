@@ -1,4 +1,13 @@
-"""Numerical compute engine for EM environment estimation."""
+"""Numerical compute engine for EM environment estimation.
+
+计算流程涵盖：
+1. 构建观测网格（纬/经度单位 degree，高度单位米）
+2. 过滤影响范围内的辐射源（距离单位 km）
+3. 结合天线增益、传播损耗、功率密度与电场强度换算（瓦特、dBm、dBµV/m）
+
+该模块的接口被 CLI、REST 服务以及可视化工具复用，因此注释中明确了输入输出约定，
+便于未来将算法部署为长期运行的服务。
+"""
 
 from __future__ import annotations
 
@@ -20,14 +29,32 @@ from .combine import (
     sum_sources_and_topk,
 )
 from .config import ENGINE_CONFIG, EngineConfig
-from .geo import elevation_angle_deg, forward_azimuth_deg, haversine_km
+from .geo import EARTH_RADIUS_KM, elevation_angle_deg, forward_azimuth_deg, haversine_km
 from .grid import GridDefinition, create_grid
 from .propagation import propagation_additional_loss_dB
 
 
 @dataclass
 class BandResult:
-    """Result container for a single band."""
+    """Result container for a single frequency band.
+
+    Attributes
+    ----------
+    name : str
+        频段名称。
+    center_freq_MHz : float
+        频段中心频率 (MHz)。
+    field_strength_dbuv_per_m : np.ndarray
+        电场强度格网，单位 dBµV/m。
+    power_density_W_m2 : np.ndarray
+        功率密度格网，单位 W/m²。
+    topk_indices : np.ndarray
+        Top-K 源索引 (shape: ``(top_k, n_lat, n_lon)``)。
+    topk_power_W_m2 : np.ndarray
+        Top-K 功率密度 (W/m²)。
+    topk_fraction : np.ndarray
+        Top-K 对总功率密度的贡献占比（0~1）。
+    """
 
     name: str
     center_freq_MHz: float
@@ -40,14 +67,22 @@ class BandResult:
 
 @dataclass
 class ComputeResult:
-    """Aggregated compute output."""
+    """Aggregated compute output for one request."""
 
     grid: GridDefinition
     band_results: Dict[str, BandResult] = field(default_factory=dict)
     source_ids: List[str] = field(default_factory=list)
 
     def write_outputs(self, output_dir: Path) -> None:
-        """Persist GeoTIFF rasters and Top-3 diagnostics for each band."""
+        """Persist GeoTIFF rasters and Top-3 diagnostics for each band.
+
+        参数
+        ----
+        output_dir : Path
+            输出目录。函数会为每个频段创建一个子目录，并写入：
+            - ``*_field_strength.tif``：电场强度栅格 (dBµV/m)
+            - ``*_topk.parquet``：Top-K 源贡献诊断（含功率占比）
+        """
         from .io_raster import write_geotiff, write_topk_parquet
 
         output_dir = Path(output_dir)
@@ -71,12 +106,35 @@ class ComputeResult:
 
 
 class ComputeEngine:
-    """Main computation orchestrator."""
+    """Main computation orchestrator for EM 环境评估."""
 
     def __init__(self, config: EngineConfig = ENGINE_CONFIG) -> None:
+        """Create a compute engine with optional configuration overrides."""
         self.config = config
 
     def compute(self, request: ComputeRequest) -> ComputeResult:
+        """Run the full EM 环境估算流程并返回结果对象。
+
+        参数
+        ----
+        request : ComputeRequest
+            请求载荷，包含区域、网格、频段、环境参数以及辐射源。
+            - 坐标单位: 度
+            - 高度单位: 米
+            - 距离计算: 千米
+            - 频率单位: MHz
+            - 功率单位: dBm (输入)、W (内部计算)
+
+        返回
+        ----
+        ComputeResult
+            包含每个频段的栅格化电场强度 (dBµV/m)、功率密度 (W/m²) 以及 Top-K 源诊断信息。
+
+        说明
+        ----
+        该方法无状态，可安全用于后台服务的并发调用。对于服务化部署，可将引擎实例复用，
+        并按需扩展缓存策略（例如对网格或传播结果缓存）。
+        """
         if not request.bands:
             raise ValueError("At least one band must be provided.")
 
@@ -144,28 +202,46 @@ class ComputeEngine:
             field_strength = field_strength_dBuV_per_m(total_power_density)
             field_strength[~grid.mask] = np.nan
             total_power_density[~grid.mask] = np.nan
-            masked_indices = np.where(grid.mask[None, ...], topk_indices, -1)
-            masked_power = np.where(grid.mask[None, ...], topk_power, np.nan)
-            masked_fraction = np.where(grid.mask[None, ...], fractions, np.nan)
 
             threshold = request.metric == "E_field_dBuV_per_m" and self.config.threshold_dbuv_per_m
             if threshold:
                 field_strength[field_strength < self.config.threshold_dbuv_per_m] = np.nan
+
+            valid_mask = np.isfinite(field_strength)
+            total_power_density[~valid_mask] = np.nan
+            topk_indices = np.where(valid_mask[None, ...], topk_indices, -1)
+            topk_power = np.where(valid_mask[None, ...], topk_power, np.nan)
+            fractions = np.where(valid_mask[None, ...], fractions, np.nan)
 
             band_results[band.name] = BandResult(
                 name=band.name,
                 center_freq_MHz=center_freq,
                 field_strength_dbuv_per_m=field_strength,
                 power_density_W_m2=total_power_density,
-                topk_indices=masked_indices,
-                topk_power_W_m2=masked_power,
-                topk_fraction=masked_fraction,
+                topk_indices=topk_indices,
+                topk_power_W_m2=topk_power,
+                topk_fraction=fractions,
             )
 
         return ComputeResult(grid=grid, band_results=band_results, source_ids=source_ids)
 
     def _filter_sources(self, sources: List[Source], grid: GridDefinition, buffer_km: float) -> List[Source]:
-        """Filter sources based on a rudimentary bounding circle around the region."""
+        """Filter sources based on a rudimentary bounding circle around the region.
+
+        参数
+        ----
+        sources : list[Source]
+            候选辐射源列表。
+        grid : GridDefinition
+            网格定义（提供区域中心与遮罩）。
+        buffer_km : float
+            影响半径缓冲，单位 km。
+
+        返回
+        ----
+        list[Source]
+            落在区域中心半径 ``extent + buffer`` 内的源。距离通过哈弗辛公式计算。
+        """
         if not sources:
             return []
 
@@ -173,9 +249,23 @@ class ComputeEngine:
         if not mask.any():
             lat_center = float(np.mean(grid.latitudes))
             lon_center = float(np.mean(grid.longitudes))
+            lat_points = grid.latitudes.ravel()
+            lon_points = grid.longitudes.ravel()
         else:
             lat_center = float(np.mean(grid.latitudes[mask]))
             lon_center = float(np.mean(grid.longitudes[mask]))
+            lat_points = grid.latitudes[mask]
+            lon_points = grid.longitudes[mask]
+
+        effective_radius = EARTH_RADIUS_KM * self.config.k_factor
+
+        if lat_points.size:
+            center_lat = np.full(lat_points.shape, lat_center, dtype=float)
+            center_lon = np.full(lon_points.shape, lon_center, dtype=float)
+            distances = haversine_km(center_lat, center_lon, lat_points, lon_points, radius_km=effective_radius)
+            extent_km = float(np.max(distances))
+        else:
+            extent_km = 0.0
 
         retained: List[Source] = []
         for src in sources:
@@ -184,14 +274,27 @@ class ComputeEngine:
                 np.array([src.position.lon]),
                 np.array([lat_center]),
                 np.array([lon_center]),
+                radius_km=effective_radius,
             )[0]
-            if distance_km <= buffer_km + 1.5 * max(grid.shape):
+            if distance_km <= buffer_km + extent_km:
                 retained.append(src)
         return retained
 
     def _prepare_geometry(self, sources: List[Source], grid: GridDefinition):
+        """Pre-compute geometric relationships between sources and grid cells.
+
+        返回一个 ``SimpleNamespace``，其中包含：
+        - ``horizontal_km``: 水平距离 (km)
+        - ``slant_km``: 斜距 (km)
+        - ``bearing_deg``: 方位角 (deg)
+        - ``elevation_deg``: 仰角 (deg)
+        - ``tx_alt_m`` / ``rx_alt_m``: 发射/接收高度 (m)
+
+        这些数据用于传播损耗和天线增益计算，方便在服务化环境中重复使用同一几何关系。
+        """
         lat_mesh = grid.latitudes
         lon_mesh = grid.longitudes
+        effective_radius = EARTH_RADIUS_KM * self.config.k_factor
 
         src_lat = np.array([src.position.lat for src in sources], dtype=float)[:, None, None]
         src_lon = np.array([src.position.lon for src in sources], dtype=float)[:, None, None]
@@ -201,7 +304,7 @@ class ComputeEngine:
         lat_targets = np.broadcast_to(lat_mesh, (len(sources),) + grid.shape)
         lon_targets = np.broadcast_to(lon_mesh, (len(sources),) + grid.shape)
 
-        horizontal_km = haversine_km(src_lat, src_lon, lat_targets, lon_targets)
+        horizontal_km = haversine_km(src_lat, src_lon, lat_targets, lon_targets, radius_km=effective_radius)
         bearing_deg = forward_azimuth_deg(src_lat, src_lon, lat_targets, lon_targets)
         delta_alt_m = (rx_alt - src_alt).astype(float)
         slant_km = np.sqrt(horizontal_km**2 + (delta_alt_m / 1000.0) ** 2)

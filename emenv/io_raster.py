@@ -1,4 +1,8 @@
-"""Output helpers for writing raster grids and Top-3 diagnostics."""
+"""Output helpers for writing raster grids and Top-K diagnostics.
+
+提供 GeoTIFF（WGS84 坐标）与 Parquet 输出，便于在服务化部署后直接向对象存储或文件系统写入。
+电场强度以 dBµV/m 输出，功率密度以 W/m² 表示，Top-K 数据用于分析主要贡献源。
+"""
 
 from __future__ import annotations
 
@@ -11,6 +15,18 @@ from .grid import GridDefinition
 
 
 def _grid_resolution(grid: GridDefinition) -> tuple[float, float]:
+    """Return latitude/longitude step size (degree) for a grid.
+
+    参数
+    ----
+    grid : GridDefinition
+        目标网格。
+
+    返回
+    ----
+    tuple[float, float]
+        ``(lat_step_deg, lon_step_deg)``。
+    """
     lat_values = grid.latitudes[:, 0]
     lon_values = grid.longitudes[0, :]
     if len(lat_values) > 1:
@@ -25,7 +41,24 @@ def _grid_resolution(grid: GridDefinition) -> tuple[float, float]:
 
 
 def write_geotiff(path: Path, grid: GridDefinition, data: np.ndarray, nodata: float = np.nan) -> None:
-    """Persist a single-band GeoTIFF using WGS84 geographic coordinates."""
+    """Persist a single-band GeoTIFF using WGS84 geographic coordinates.
+
+    参数
+    ----
+    path : Path
+        输出文件路径。
+    grid : GridDefinition
+        网格定义（提供坐标与掩膜）。
+    data : np.ndarray
+        要写出的数据栅格，例如电场强度 (dBµV/m) 或功率密度。
+    nodata : float, 默认 ``np.nan``
+        空值填充值。默认为 NaN 以保持浮点精度。
+
+    说明
+    ----
+    数据会按行翻转以符合 GeoTIFF 北向上的惯例。函数确保输出目录存在，
+    方便在服务化场景中直接写入磁盘或挂载的对象存储。
+    """
     import rasterio
     from rasterio.transform import from_origin
 
@@ -58,7 +91,7 @@ def write_geotiff(path: Path, grid: GridDefinition, data: np.ndarray, nodata: fl
         nodata=float(fill_value),
     ) as dst:
         dst.write(data_to_write, 1)
-        dst.write_mask(np.flipud(~nan_mask).astype(np.uint8) * 255)
+        dst.write_mask((~nan_mask).astype(np.uint8) * 255)
 
 
 def write_topk_parquet(
@@ -70,7 +103,34 @@ def write_topk_parquet(
     topk_power_W_m2: np.ndarray,
     source_ids: Sequence[str],
 ) -> None:
-    """Write Top-3 diagnostics into a columnar Parquet file."""
+    """Write Top-K diagnostics into a columnar Parquet file.
+
+    参数
+    ----
+    path : Path
+        输出文件路径。
+    grid : GridDefinition
+        网格定义，用于展开经纬度。
+    band_name : str
+        频段名称。
+    topk_indices : np.ndarray
+        Top-K 源索引矩阵。
+    topk_fraction : np.ndarray
+        对应贡献比例 (0~1)。
+    topk_power_W_m2 : np.ndarray
+        功率密度 (W/m²)。
+    source_ids : Sequence[str]
+        与索引对应的源 ID 列表。
+
+    返回
+    ----
+    None
+
+    说明
+    ----
+    输出表包含经纬度、频段、排名、源索引/ID、贡献比例和功率，便于下游服务直接查询或
+    可视化。即使没有有效数据也会生成空表，方便流水线处理。
+    """
     import pyarrow as pa
     import pyarrow.parquet as pq
 
