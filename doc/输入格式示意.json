@@ -81,7 +81,8 @@
   "temporal_agg": "peak",
   "limits": {
     "max_sources": 50,
-    "max_region_km": 200
+    "max_region_km": 1000,
+    "max_grid_points": 200000
   },
   "sources": [
     {

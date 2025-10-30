@@ -36,6 +36,14 @@ class Region(BaseModel):
     def validate_polygon(cls, value: List[LatLon]) -> List[LatLon]:
         if len(value) < 3:
             raise ValueError("polygon must contain at least 3 vertices")
+
+        area = 0.0
+        for idx, current in enumerate(value):
+            nxt = value[(idx + 1) % len(value)]
+            area += current.lon * nxt.lat - nxt.lon * current.lat
+
+        if area > 0.0:
+            value = list(reversed(value))
         return value
 
 
@@ -201,12 +209,24 @@ class Band(BaseModel):
             raise ValueError("f_max_MHz must be greater than f_min_MHz")
         return v
 
-
 class Limits(BaseModel):
-    """Compute workload constraints to guard服务端资源."""
+    """Compute workload constraints to guard server resources."""
 
     max_sources: int = Field(50, gt=0)
-    max_region_km: float = Field(200.0, gt=0)
+    max_region_km: float = Field(1000.0, gt=0)
+    max_grid_points: int = Field(200000, gt=0)
+
+    @validator("max_region_km")
+    def validate_max_region_km(cls, value: float) -> float:
+        if value > 1000.0:
+            raise ValueError("max_region_km cannot exceed 1000 km")
+        return value
+
+    @validator("max_grid_points")
+    def validate_max_grid_points(cls, value: int) -> int:
+        if value > 200000:
+            raise ValueError("max_grid_points cannot exceed 200000")
+        return value
 
 
 class ComputeRequest(BaseModel):

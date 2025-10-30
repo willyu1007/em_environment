@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from emenv.api_models import (
     Antenna,
@@ -72,3 +73,38 @@ def test_engine_threshold_masks_topk():
     assert (band_result.topk_indices == -1).all()
     assert np.isnan(band_result.topk_power_W_m2).all()
     assert np.isnan(band_result.topk_fraction).all()
+
+
+def test_engine_respects_region_limit():
+    request = build_simple_request()
+    request.limits.max_region_km = 10.0
+    engine = ComputeEngine()
+    with pytest.raises(ValueError) as exc:
+        engine.compute(request)
+    assert "region extent exceeds configured limits" in str(exc.value)
+
+
+def test_engine_respects_grid_point_limit():
+    request = build_simple_request()
+    request.limits.max_grid_points = 10
+    engine = ComputeEngine()
+    with pytest.raises(ValueError) as exc:
+        engine.compute(request)
+    assert "grid size" in str(exc.value)
+
+
+def test_region_polygon_orientation_auto_normalised():
+    ccw_polygon = [
+        LatLon(lat=33.8, lon=118.0),
+        LatLon(lat=33.8, lon=118.2),
+        LatLon(lat=34.0, lon=118.2),
+        LatLon(lat=34.0, lon=118.0),
+    ]
+    region = Region(polygon=ccw_polygon)
+
+    area = 0.0
+    for idx, current in enumerate(region.polygon):
+        nxt = region.polygon[(idx + 1) % len(region.polygon)]
+        area += current.lon * nxt.lat - nxt.lon * current.lat
+
+    assert area <= 0.0

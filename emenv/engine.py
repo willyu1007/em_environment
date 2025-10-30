@@ -20,7 +20,7 @@ from pathlib import Path
 import numpy as np
 
 from .antenna import peak_gain_dBi
-from .api_models import Band, ComputeRequest, Source
+from .api_models import Band, ComputeRequest, Source, Region
 from .bands import bands_center_array
 from .combine import (
     eirp_dBm_to_W,
@@ -105,6 +105,30 @@ class ComputeResult:
             )
 
 
+def _region_extents_km(region: Region) -> tuple[float, float]:
+    """Return approximate north-south and east-west spans in kilometres."""
+    lats = np.array([vertex.lat for vertex in region.polygon], dtype=float)
+    lons = np.array([vertex.lon for vertex in region.polygon], dtype=float)
+    lat_min, lat_max = float(lats.min()), float(lats.max())
+    lon_min, lon_max = float(lons.min()), float(lons.max())
+
+    lat_extent = haversine_km(
+        np.array([lat_min]),
+        np.array([lon_min]),
+        np.array([lat_max]),
+        np.array([lon_min]),
+        radius_km=EARTH_RADIUS_KM,
+    )[0]
+    lon_extent = haversine_km(
+        np.array([lat_min]),
+        np.array([lon_min]),
+        np.array([lat_min]),
+        np.array([lon_max]),
+        radius_km=EARTH_RADIUS_KM,
+    )[0]
+    return float(lat_extent), float(lon_extent)
+
+
 class ComputeEngine:
     """Main computation orchestrator for EM 环境评估."""
 
@@ -138,7 +162,24 @@ class ComputeEngine:
         if not request.bands:
             raise ValueError("At least one band must be provided.")
 
+        limits = request.limits
+        lat_extent_km, lon_extent_km = _region_extents_km(request.region)
+        max_region_km = limits.max_region_km
+        if max_region_km and (lat_extent_km > max_region_km or lon_extent_km > max_region_km):
+            raise ValueError(
+                "region extent exceeds configured limits: "
+                f"lat_span~{lat_extent_km:.2f} km, lon_span~{lon_extent_km:.2f} km, "
+                f"limit={max_region_km} km"
+            )
+
         grid = create_grid(request.region, request.grid.resolution_deg, request.grid.alt_m)
+        max_grid_points = limits.max_grid_points
+        grid_points = grid.latitudes.size
+        if grid_points > max_grid_points:
+            raise ValueError(
+                f"grid size {grid_points} exceeds configured limit {max_grid_points} points"
+            )
+
         sources = self._filter_sources(request.sources, grid, request.influence_buffer_km)
 
         center_freqs = bands_center_array(request.bands)
