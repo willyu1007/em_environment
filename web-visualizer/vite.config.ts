@@ -15,24 +15,33 @@ export default defineConfig({
     middlewareMode: false,
   },
   configureServer(server) {
-    const examplesDir = path.resolve(__dirname, '../examples');
-    const outputsLatestDir = path.resolve(__dirname, '../outputs/latest');
+    // 使用进程工作目录推导项目根，避免 __dirname 在ESM环境差异
+    const projectRoot = process.cwd();
+    const examplesDir = path.resolve(projectRoot, '../examples');
+    const outputsLatestDir = path.resolve(projectRoot, '../outputs/latest');
     server.middlewares.use('/examples', (req, res, next) => {
       try {
         const url = req.url || '/';
-        const rel = url.replace(/^\/?examples\/?/, '');
+        // 当以 '/examples' 挂载时，req.url 一般为 '/<file>'，只需去掉开头的 '/'
+        const rel = url.replace(/^\//, '');
         const safe = rel.replace(/\\/g, '/');
         const filePath = path.join(examplesDir, safe);
         if (!filePath.startsWith(examplesDir)) { res.statusCode = 403; res.end('Forbidden'); return; }
         if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) { res.statusCode = 404; res.end('Not Found'); return; }
+        const buf = fs.readFileSync(filePath);
+        res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        fs.createReadStream(filePath).pipe(res);
+        res.setHeader('Cache-Control', 'no-store, max-age=0');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.end(buf);
       } catch (e) { next(); }
     });
     server.middlewares.use('/outputs/latest', (req, res, next) => {
       try {
         const url = req.url || '/';
-        const rel = url.replace(/^\/?outputs\/latest\/?/, '');
+        // 同理，去掉前导 '/'
+        const rel = url.replace(/^\//, '');
         const safe = rel.replace(/\\/g, '/');
         const filePath = path.join(outputsLatestDir, safe);
         if (!filePath.startsWith(outputsLatestDir)) { res.statusCode = 403; res.end('Forbidden'); return; }
@@ -43,7 +52,12 @@ export default defineConfig({
         if (ext === '.tif' || ext === '.tiff') res.setHeader('Content-Type', 'image/tiff');
         else if (ext === '.parquet') res.setHeader('Content-Type', 'application/octet-stream');
         else res.setHeader('Content-Type', 'application/octet-stream');
-        fs.createReadStream(filePath).pipe(res);
+        res.setHeader('Cache-Control', 'no-store, max-age=0');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        const buf = fs.readFileSync(filePath);
+        res.statusCode = 200;
+        res.end(buf);
       } catch (e) { next(); }
     });
     server.middlewares.use('/__dev/outputs', (_req, res) => {
@@ -58,7 +72,12 @@ export default defineConfig({
         res.statusCode = 200; res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify({ bands: [] }));
       }
     });
-  }
+  },
+  define: (() => {
+    const projectRoot = process.cwd();
+    const examplesAbs = (path.resolve(projectRoot, '../examples')).replace(/\\/g, '/');
+    return { __EXAMPLES_ABS__: JSON.stringify(examplesAbs) } as Record<string, string>;
+  })()
 });
 
 

@@ -20,18 +20,31 @@
         </div>
         <div class="hint">仅允许选择项目路径下 examples/ 目录中以 request_ 开头的 JSON 文件。</div>
         <div class="ok" v-if="exampleSuccess">{{ exampleSuccess }}</div>
-        <div class="warn" v-if="exampleError">{{ exampleError }}</div>
+        <div class="warn" v-if="exampleReadError">{{ exampleReadError }}</div>
+        <div class="warn" v-if="exampleParseError">{{ exampleParseError }}</div>
         <div class="group" v-if="exampleConfig">
           <div class="title">参数摘要</div>
           <div class="ro-line">区域点数：{{ (exampleConfig.region?.polygon||[]).length }}</div>
+          <details style="margin:4px 0;">
+            <summary>区域坐标</summary>
+            <ul>
+              <li v-for="(p,i) in (exampleConfig.region?.polygon||[])" :key="i">点{{ i+1 }}: ({{ p.lat }}, {{ p.lon }})</li>
+            </ul>
+          </details>
           <div class="ro-line">网格：res={{ exampleConfig.grid?.resolution_deg }}°，alt={{ exampleConfig.grid?.alt_m }}m</div>
           <div class="ro-line">传播模型：{{ exampleConfig.environment?.propagation?.model }}</div>
-          <div class="ro-line">频段数量：{{ (exampleConfig.bands||[]).length }}</div>
+          <details style="margin:4px 0;">
+            <summary>频段（{{ (exampleConfig.bands||[]).length }}）</summary>
+            <ul>
+              <li v-for="(b,i) in (exampleConfig.bands||[])" :key="i">{{ b.name }}：{{ b.f_min_MHz }}-{{ b.f_max_MHz }} MHz（ref_bw {{ b.ref_bw_kHz }} kHz）</li>
+            </ul>
+          </details>
         </div>
         <div class="group" v-if="exampleConfig && (exampleConfig.sources||[]).length">
           <div class="title">辐射源设置</div>
           <div class="hint">辐射源数量：{{ (exampleConfig.sources||[]).length }}</div>
-          <div class="hint" v-if="exampleError">{{ exampleError }}</div>
+          <div class="warn" v-if="exampleReadError">{{ exampleReadError }}</div>
+          <div class="warn" v-if="exampleParseError">{{ exampleParseError }}</div>
           <details v-for="(s,idx) in exampleConfig.sources" :key="idx" class="src-readonly">
             <summary>源 {{ s.id || ('source_'+(idx+1)) }}</summary>
             <div class="ro-line">类型: {{ s.type }}</div>
@@ -116,6 +129,8 @@
             <button type="button" @click="refreshBands">刷新</button>
             <button type="button" @click="loadBandData">加载</button>
           </div>
+          <div class="warn" v-if="availableBands.length===0">未检测到 outputs/latest 下的频段目录，请先运行计算或点击“刷新”。</div>
+          <div class="hint" v-if="lastLoadInfo">{{ lastLoadInfo }}</div>
         </div>
         <div class="group">
           <div class="title">色彩方案与映射</div>
@@ -352,6 +367,7 @@ const topkRows = ref<Array<{ __idx:number; lat:number; lon:number; rank:number; 
 const config = ref<any | null>(null);
 const restBase = ref<string>('http://localhost:8000');
 const lastComputeInfo = ref<string>('');
+const lastLoadInfo = ref<string>('');
 const configMode = ref<'file'|'editor'>('file');
 const selectedExample = ref<string>('request_basic_free_space.json');
 const exampleList = [
@@ -367,21 +383,46 @@ const exampleList = [
 
 // 选择示例后，自动从 /examples/ 拉取并解析，显示只读辐射源详情
 const exampleConfig = ref<any | null>(null);
-const exampleError = ref<string>('');
+const exampleReadError = ref<string>('');
+const exampleParseError = ref<string>('');
 const exampleSuccess = ref<string>('');
 async function loadExampleConfig(name: string){
   try{
-    const res = await fetch(`/examples/${encodeURIComponent(name)}`);
-    if (!res.ok) throw new Error('示例读取失败');
-    exampleConfig.value = await res.json();
-    config.value = exampleConfig.value;
-    exampleError.value = '';
-    exampleSuccess.value = `已成功载入示例：${name}`;
-    setTimeout(()=>{ exampleSuccess.value = ''; }, 3000);
+    // 优先使用 Vite 的 /@fs 绝对路径直读，避免 SPA 回退
+    // __EXAMPLES_ABS__ 由 vite.config.ts define 注入
+    // @ts-ignore
+    const absBase: string = typeof __EXAMPLES_ABS__ !== 'undefined' ? __EXAMPLES_ABS__ : '';
+    const url = absBase ? `/@fs/${absBase}/${encodeURIComponent(name)}` : `/examples/${encodeURIComponent(name)}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      exampleConfig.value = null;
+      config.value = null;
+      exampleReadError.value = `示例文件读取失败（HTTP ${res.status}）`;
+      exampleParseError.value = '';
+      exampleSuccess.value = '';
+      return;
+    }
+    const text = await res.text();
+    try {
+      const json = JSON.parse(text);
+      exampleConfig.value = json;
+      config.value = exampleConfig.value;
+      exampleReadError.value = '';
+      exampleParseError.value = '';
+      exampleSuccess.value = `已成功载入示例：${name}`;
+      setTimeout(()=>{ exampleSuccess.value = ''; }, 3000);
+    } catch (e:any) {
+      exampleConfig.value = null;
+      config.value = null;
+      exampleReadError.value = '';
+      exampleParseError.value = `示例文件解析失败：${e?.message||'JSON 语法错误'}`;
+      exampleSuccess.value = '';
+    }
   }catch{
     exampleConfig.value = null;
     config.value = null;
-    exampleError.value = '示例文件读取或解析失败';
+    exampleReadError.value = '示例文件读取失败（网络或跨域）';
+    exampleParseError.value = '';
     exampleSuccess.value = '';
   }
 }
@@ -392,6 +433,9 @@ watchEffect(()=>{
   }
 });
 
+// 进入页面时尝试枚举 outputs/latest 频段
+onMounted(() => { refreshBands(); });
+
 // 地图可视化：outputs/latest 频段列举与加载
 const availableBands = ref<string[]>([]);
 const selectedBand = ref<string>('');
@@ -400,6 +444,10 @@ async function refreshBands(){
     const res = await fetch('/__dev/outputs');
     const data = await res.json();
     availableBands.value = Array.isArray(data.bands) ? data.bands : [];
+    if ((!availableBands.value || availableBands.value.length===0) && exampleConfig.value?.bands?.length){
+      // 回退：用示例里的频段名称占位，提示用户先运行计算
+      availableBands.value = exampleConfig.value.bands.map((b:any)=>b.name).filter((x:string)=>!!x);
+    }
     if (!selectedBand.value && availableBands.value.length) selectedBand.value = availableBands.value[0];
   }catch{ availableBands.value = []; }
 }
@@ -407,12 +455,15 @@ async function loadBandData(){
   if (!selectedBand.value) return;
   // 加载 tiff
   const tiffUrl = `/outputs/latest/${encodeURIComponent(selectedBand.value)}/${encodeURIComponent(selectedBand.value)}_field_strength.tif`;
+  lastLoadInfo.value = '正在加载 GeoTIFF...';
   const tifResp = await fetch(tiffUrl);
-  if (tifResp.ok){ const buf = await tifResp.arrayBuffer(); await loadTiffBuffer(buf); }
+  if (tifResp.ok){ const buf = await tifResp.arrayBuffer(); await loadTiffBuffer(buf); lastLoadInfo.value = 'GeoTIFF 已加载'; }
+  else { lastLoadInfo.value = `加载 GeoTIFF 失败: ${tifResp.status}`; return; }
   // 加载 parquet
   const pqUrl = `/outputs/latest/${encodeURIComponent(selectedBand.value)}/${encodeURIComponent(selectedBand.value)}_topk.parquet`;
   const pqResp = await fetch(pqUrl);
-  if (pqResp.ok){ const buf = await pqResp.arrayBuffer(); await loadParquetBuffer(buf); }
+  if (pqResp.ok){ const buf = await pqResp.arrayBuffer(); await loadParquetBuffer(buf); lastLoadInfo.value = lastLoadInfo.value + '，Parquet 已加载'; }
+  else { lastLoadInfo.value = lastLoadInfo.value + `，Parquet 加载失败: ${pqResp.status}`; }
 }
 function onBandChange(){ /* 预留：切换时不自动加载 */ }
 
@@ -462,8 +513,16 @@ function drawHeat(){
   ctx.putImageData(img, 0, 0);
   const bounds = L.latLngBounds([tiffBBox[1], tiffBBox[0]], [tiffBBox[3], tiffBBox[2]]);
   if (rasterLayer && map) { try { map.removeLayer(rasterLayer); } catch {} }
-  rasterLayer = L.imageOverlay(canvas.toDataURL(), bounds, { opacity: 0.85 });
-  rasterLayer.addTo(map); try { map.fitBounds(bounds); } catch {}
+  // 使用 blob URL，避免 dataURL 过长导致失败
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    rasterLayer = L.imageOverlay(url, bounds, { opacity: 0.85, interactive: false });
+    rasterLayer.addTo(map);
+    try { map.fitBounds(bounds); } catch {}
+    // 清理 URL
+    setTimeout(()=>URL.revokeObjectURL(url), 10000);
+  }, 'image/png');
 }
 
 // 配置编辑器状态
@@ -835,6 +894,7 @@ th, td { border: 1px solid #ddd; padding: 4px 6px; font-size: 12px; }
 .ro-line { color: #333; margin: 4px 0; }
 .two-col { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; align-items: stretch; }
 .beam-panel { display:flex; flex-direction: column; align-items: center; gap: 6px; }
+.two-col .map-container { height: 560px; }
 </style>
 
 

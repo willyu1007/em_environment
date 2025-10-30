@@ -9,12 +9,25 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from ..api_models import ComputeRequest
 from ..service import ComputeService
 
 app = FastAPI(title="EM Environment Service", version="0.1.0")
+
+# 允许本地前端（vite 默认5173端口）跨域访问
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 _service = ComputeService()
 
 
